@@ -72,7 +72,7 @@ class AfricasTalkingServices extends NoorServices
                 'Accept-Encoding' => 'gzip, deflate, br',
                 ''
 
-            ])->post($endpoint, [
+            ])->asForm()->post($endpoint, [
                 'to' => $to,
                 'message' => $message,
                 'enqueue' => 1,
