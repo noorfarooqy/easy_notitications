@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('easy_notifications', function (Blueprint $table) {
-            $table->string('onfon_token')->nullable()->change();
+            $table->text('onfon_token')->nullable()->change();
             $table->string('at_token')->nullable()->after('onfon_token')->comment('Africas talking auth token');
         });
     }
