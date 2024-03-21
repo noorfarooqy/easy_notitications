@@ -70,7 +70,6 @@ class AfricasTalkingServices extends NoorServices
                 'authToken' => $token->at_token,
                 'Host' => config('easy_notifications.africastalking.api_host', 'api.africastalking.com'),
                 'Accept-Encoding' => 'gzip, deflate, br',
-                ''
 
             ])->asForm()->post($endpoint, [
                 'to' => $to,
