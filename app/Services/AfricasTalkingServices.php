@@ -63,7 +63,8 @@ class AfricasTalkingServices extends NoorServices
             $url = config('easy_notifications.africastalking.api_url');
             $endpoint = $url . config('easy_notifications.africastalking.sms_endpoint');
             $response = Http::withHeaders([
-                'Accept' => 'application/x-www-form-urlencoded',
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
                 'authToken' => $token->at_token
             ])->post($endpoint, [
                 'to' => $to,
