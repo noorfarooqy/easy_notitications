@@ -29,7 +29,7 @@ class AfricasTalkingServices extends NoorServices
                 $uri = config('easy_notifications.africastalking.api_url') . $auth_endpoint;
                 $response = Http::withHeaders([
                     'Accept' => 'application/json',
-                    'apiKey' => config('easy_notifications.africas_talking.api_key'),
+                    'apiKey' => config('easy_notifications.africastalking.api_key'),
                 ])->post($uri, [
                     'username' => config('easy_notifications.africastalking.username'),
                 ]);
@@ -38,7 +38,7 @@ class AfricasTalkingServices extends NoorServices
                     $this->setError($response->body());
                     return false;
                 }
-                Log::info($response->body());
+                // Log::info($response->body());
                 $json_response = $response->json();
                 $token = EasyNotification::create([
                     'at_token' => $json_response['token'],
