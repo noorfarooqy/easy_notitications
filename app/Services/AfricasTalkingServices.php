@@ -34,7 +34,7 @@ class AfricasTalkingServices extends NoorServices
                     'username' => config('easy_notifications.africastalking.username'),
                 ]);
 
-                if ($response->status() == 200 && $response->status() != 201) {
+                if ($response->status() != 200 && $response->status() != 201) {
                     $this->setError(json_decode($response->body(), true));
                     return false;
                 }
