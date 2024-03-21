@@ -35,7 +35,7 @@ class AfricasTalkingServices extends NoorServices
                 ]);
 
                 if ($response->status() != 200 && $response->status() != 201) {
-                    $this->setError(json_decode($response->body(), true));
+                    $this->setError($response->body());
                     return false;
                 }
                 Log::info($response->body());
