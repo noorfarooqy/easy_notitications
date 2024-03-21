@@ -54,6 +54,9 @@ class AfricasTalkingServices extends NoorServices
     {
         try {
             $token = $this->getAuthenticationToken();
+            if (!$token) {
+                return $this->getResponse();
+            }
             $url = config('easy_notifications.africastalking.api_url');
             $endpoint = $url . config('easy_notifications.africastalking.sms_endpoint');
             $response = Http::withHeaders([
