@@ -4,6 +4,7 @@ namespace Noorfarooqy\EasyNotifications\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Noorfarooqy\NoorAuth\Services\NoorServices;
 
 class AfricasTalkingServices extends NoorServices
@@ -37,9 +38,11 @@ class AfricasTalkingServices extends NoorServices
                     $this->setError(json_decode($response->body(), true));
                     return false;
                 }
+                Log::info($response->body());
+                $json_response = $response->json();
                 $token = EasyNotification::create([
-                    'onfon_token' => $response->json()['token'],
-                    'expires_at' => now()->addSeconds($response->json()['lifetimeInSeconds'])
+                    'at_token' => $json_response['token'],
+                    'expires_at' => now()->addSeconds($json_response['lifetimeInSeconds'])
                 ]);
             }
 
