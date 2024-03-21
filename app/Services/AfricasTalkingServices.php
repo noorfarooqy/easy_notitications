@@ -21,8 +21,8 @@ class AfricasTalkingServices extends NoorServices
             if (!$token || $token->expires_at < now()) {
                 if ($token) {
 
-                    $token?->has_expired = true;
-                    $token?->save();
+                    $token->has_expired = true;
+                    $token->save();
                 }
                 $auth_endpoint = config('easy_notifications.africastalking.auth_endpoint');
                 $uri = config('easy_notifications.africastalking.api_url') . $auth_endpoint;
