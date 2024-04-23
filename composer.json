@@ -20,7 +20,8 @@
     "minimum-stability": "stable",
     "require": {
         "laravel/framework": "^10.0|^11.0",
-        "noorfarooqy/noorauth": "^1.0"
+        "noorfarooqy/noorauth": "^1.0",
+        "doctrine/dbal": "^4.0"
     },
     "extra": {
         "laravel": {

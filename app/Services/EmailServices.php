@@ -3,6 +3,7 @@
 namespace Noorfarooqy\EasyNotifications\Services;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Noorfarooqy\EasyNotifications\Mail\EasyNotificationMail;
 use Noorfarooqy\NoorAuth\Services\NoorServices;
 
 class EmailServices extends NoorServices
@@ -25,7 +26,7 @@ class EmailServices extends NoorServices
         $data = $this->validatedData();
         try {
             $email = EasyEmail::create($data);
-            Mail::to($data['to'])->send(new EmailTemplate($data['email_body']));
+            Mail::to($data['to'])->send(new EasyNotificationMail($data['email_body']));
             $this->setError('',0);
             $this->setSuccess('success');
             return $this->getResponse($email);

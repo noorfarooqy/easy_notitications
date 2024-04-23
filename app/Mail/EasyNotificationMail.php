@@ -18,8 +18,10 @@ class EasyNotificationMail extends Mailable
      */
     protected $subject;
     protected $view_template;
-     public function __construct($subject = 'Easy Notification Mail', $view_template='en::mail.easy_notification_template')
+    public $email_body;
+     public function __construct($email_body, $subject = 'Easy Notification Mail', $view_template='en::mail.easy_notification_template')
     {
+        $this->email_body = $email_body;
         $this->subject = $subject;
         $this->view_template = $view_template;
     }
