@@ -42,7 +42,7 @@ class EasyNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: $this->view_template,
+            markdown: $this->view_template,
         );
     }
 
