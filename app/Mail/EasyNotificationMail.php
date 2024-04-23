@@ -16,8 +16,8 @@ class EasyNotificationMail extends Mailable
     /**
      * Create a new message instance.
      */
-    protected $subject;
-    protected $view_template;
+    public $subject;
+    public $view_template;
     public $email_body;
      public function __construct($email_body, $subject = 'Easy Notification Mail', $view_template='en::mail.easy_notification_template')
     {
