@@ -16,6 +16,9 @@ class EasyNotificationsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../database/migrations/' => database_path('migrations/'),
         ], 'en-database');
+
+        $this->loadRoutesFrom(__DIR__. '/../routes/api.php');
+        $this->loadViewsFrom(__DIR__. '/../resources/views', 'en');
     }
 
     public function register()
