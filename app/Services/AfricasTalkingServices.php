@@ -75,7 +75,8 @@ class AfricasTalkingServices extends NoorServices
                 'to' => $to,
                 'message' => $message,
                 'enqueue' => 1,
-                'username' => config('easy_notifications.africastalking.username')
+                'username' => config('easy_notifications.africastalking.username'),
+                'from' => config('easy_notifications.africastalking.from'),
             ]);
 
             $data = [
