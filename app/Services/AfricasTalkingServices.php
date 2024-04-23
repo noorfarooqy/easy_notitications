@@ -93,7 +93,7 @@ class AfricasTalkingServices extends NoorServices
             $data['dlr_response'] = json_encode($response->body());
             $sms = EasySmsNotifications::create($data);
             $this->setError('', 0);
-            $this->setSuccess('', 0);
+            $this->setSuccess('success');
             return $this->getResponse($sms);
         } catch (\Throwable $th) {
             $this->setError($th->getMessage());

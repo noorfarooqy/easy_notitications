@@ -80,7 +80,7 @@ class SmsServices extends NoorServices
         ])->post($endpoint, $payload);
         if (env('APP_DEBUG')) {
             Log::info($endpoint);
-            Log::info($payload);
+            Log::info(json_encode($payload));
         }
         if ($response->ok()) {
             $data = [
