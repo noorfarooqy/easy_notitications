@@ -9,7 +9,7 @@ use Noorfarooqy\NoorAuth\Services\NoorServices;
 class EmailServices extends NoorServices
 {
 
-    public function SendEmailUsingSmtp($request, $subject='Easy Email', $view_template='en::mail.easy_notification_template')
+    public function SendEmailUsingSmtp($request)
     {
         $this->request = $request;
 
@@ -24,6 +24,11 @@ class EmailServices extends NoorServices
         }
 
         $data = $this->validatedData();
+        return $this->SendEmail($data);
+    }
+
+    public function SendEmail($data,$subject='Easy Email', $view_template='en::mail.easy_notification_template')
+    {
         try {
             $email = EasyEmail::create($data);
             Mail::to($data['to'])->send(new EasyNotificationMail($data['email_body'], $subject, $view_template));
@@ -35,7 +40,6 @@ class EmailServices extends NoorServices
             Log::info("[-] Error while sending email ".$th->getMessage());
             return $this->getResponse();
         }
-
     }
 
 }
