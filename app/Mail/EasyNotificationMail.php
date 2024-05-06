@@ -62,9 +62,9 @@ class EasyNotificationMail extends Mailable
     public function attachments(): array
     {
         $attached_files = [];
-        foreach ($this->attachments as $attachment) {
-            $attached_files[] = Attachment::fromPath($attachment);
-        }
+        // foreach ($this->attachments as $attachment) {
+        //     $attached_files[] = Attachment::fromPath($attachment);
+        // }
         return $attached_files;
     }
 }
