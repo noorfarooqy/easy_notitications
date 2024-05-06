@@ -1,6 +1,7 @@
 <?php
 
 namespace Noorfarooqy\EasyNotifications\Services;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Noorfarooqy\EasyNotifications\Mail\EasyNotificationMail;
@@ -19,7 +20,7 @@ class EmailServices extends NoorServices
         ];
 
         $this->customValidate();
-        if($this->has_failed){
+        if ($this->has_failed) {
             return $this->getResponse();
         }
 
@@ -27,7 +28,7 @@ class EmailServices extends NoorServices
         return $this->SendEmail($data);
     }
 
-    public function SendEmail($data,$subject='Easy Email', $view_template='en::mail.easy_notification_template')
+    public function SendEmail($data, $subject = 'Easy Email', $view_template = 'en::mail.easy_notification_template', $attachments = [])
     {
         try {
             $email = EasyEmail::create([
@@ -36,14 +37,14 @@ class EmailServices extends NoorServices
                 'sent_by' => auth()?->id(),
             ]);
             Mail::to($data['to'])->send(new EasyNotificationMail($data['email_body'], $subject, $view_template));
-            $this->setError('',0);
+            $this->setError('', 0);
             $this->setSuccess('success');
             $email->is_sent = true;
             $email->save();
             return $this->getResponse($email);
         } catch (\Throwable $th) {
-            $this->setError(env('APP_DEBUG')? $th->getMessage() : 'Error sending the email');
-            Log::info("[-] Error while sending email ".$th->getMessage());
+            $this->setError(env('APP_DEBUG') ? $th->getMessage() : 'Error sending the email');
+            Log::info("[-] Error while sending email " . $th->getMessage());
             return $this->getResponse();
         }
     }

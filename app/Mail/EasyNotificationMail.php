@@ -5,6 +5,7 @@ namespace Noorfarooqy\EasyNotifications\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -19,11 +20,12 @@ class EasyNotificationMail extends Mailable
     public $subject;
     public $view_template;
     public $email_body;
-     public function __construct($email_body, $subject = 'Easy Notification Mail', $view_template='en::mail.easy_notification_template')
+    public function __construct($email_body, $subject = 'Easy Notification Mail', $view_template = 'en::mail.easy_notification_template', $attachments = [])
     {
         $this->email_body = $email_body;
         $this->subject = $subject;
         $this->view_template = $view_template;
+        $this->attachments = $attachments;
     }
 
     /**
@@ -53,6 +55,10 @@ class EasyNotificationMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $attached_files = [];
+        foreach ($this->attachments as $attachment) {
+            $attached_files[] = Attachment::fromPath($attachment);
+        }
+        return $attached_files;
     }
 }
