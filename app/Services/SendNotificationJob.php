@@ -22,7 +22,7 @@ class SendNotificationJob implements ShouldQueue
     public $data;
     protected $notification_type;
     public $sms_channel;
-    public function __construct($data, $notification_type='sms', $sms_channel='onfon')
+    public function __construct($data, $notification_type = 'sms', $sms_channel = 'onfon')
     {
         $this->data = $data;
         $this->notification_type = $notification_type;
@@ -34,24 +34,22 @@ class SendNotificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        if($this->notification_type == 'sms'){
+        if ($this->notification_type == 'sms') {
             $this->SendSmsNotification();
-        }
-        else if($this->notification_type == 'email'){
+        } else if ($this->notification_type == 'email') {
             $this->SendEmailNotification();
         }
-        
+
     }
 
     public function SendSmsNotification()
     {
-        Log::info('[*] Sending sms notification on channel '.$this->sms_channel);
-        if($this->sms_channel == 'onfon' || $this->sms_channel == 'both'){
+        Log::info('[*] Sending sms notification on channel ' . $this->sms_channel);
+        if ($this->sms_channel == 'onfon' || $this->sms_channel == 'both') {
 
             $smsServices = new SmsServices();
             $sent_notification = $smsServices->SendSmsUsingOnfon($this->data['to'], $this->data['message']);
-        }
-        else{
+        } else {
             $smsServices = new AfricasTalkingServices();
             $sent_notification = $smsServices->SendSmsUsingAfricasTalking($this->data['to'], $this->data['message']);
         }
@@ -63,7 +61,10 @@ class SendNotificationJob implements ShouldQueue
             'to' => $this->data['to'],
             'email_body' => $this->data['email_body']
         ];
-        $email_notification = $emailServices->SendEmail($email, $this->data['email_subject'], $this->data['email_view']);
+        if (!isset($this->data['attachments'])) {
+            $this->data['attachments'] = [];
+        }
+        $email_notification = $emailServices->SendEmail($email, $this->data['email_subject'], $this->data['email_view'], $this->data['attachments']);
 
     }
 }
