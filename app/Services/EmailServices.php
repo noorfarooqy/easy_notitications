@@ -36,7 +36,7 @@ class EmailServices extends NoorServices
                 'email_body' => is_array($data['email_body']) ? json_encode($data['email_body']) : $data['email_body'],
                 'sent_by' => auth()?->id(),
             ]);
-            Mail::to($data['to'])->send(new EasyNotificationMail($data['email_body'], $subject, $view_template));
+            Mail::to($data['to'])->send(new EasyNotificationMail($data['email_body'], $subject, $view_template, $attachments));
             $this->setError('', 0);
             $this->setSuccess('success');
             $email->is_sent = true;
