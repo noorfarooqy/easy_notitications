@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class EasyNotificationMail extends Mailable
 {
@@ -20,8 +21,13 @@ class EasyNotificationMail extends Mailable
     public $subject;
     public $view_template;
     public $email_body;
+    public $attachments;
     public function __construct($email_body, $subject = 'Easy Notification Mail', $view_template = 'en::mail.easy_notification_template', $attachments = [])
     {
+        if (env('APP_DEBUG')) {
+            Log::info('[*] Sending email notification');
+        }
+
         $this->email_body = $email_body;
         $this->subject = $subject;
         $this->view_template = $view_template;
