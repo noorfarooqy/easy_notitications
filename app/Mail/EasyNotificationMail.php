@@ -10,10 +10,12 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Noorfarooqy\NoorAuth\Traits\Helper;
 
 class EasyNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
+    use Helper;
 
     /**
      * Create a new message instance.
@@ -21,7 +23,8 @@ class EasyNotificationMail extends Mailable
     public $subject;
     public $view_template;
     public $email_body;
-    public $attachments;
+    public $attachment_files;
+    public $attached_files = [];
     public function __construct($email_body, $subject = 'Easy Notification Mail', $view_template = 'en::mail.easy_notification_template', $attachments = [])
     {
         if (env('APP_DEBUG')) {
@@ -31,7 +34,7 @@ class EasyNotificationMail extends Mailable
         $this->email_body = $email_body;
         $this->subject = $subject;
         $this->view_template = $view_template;
-        $this->attachments = $attachments;
+        $this->attachment_files = $attachments;
     }
 
     /**
@@ -61,10 +64,12 @@ class EasyNotificationMail extends Mailable
      */
     public function attachments(): array
     {
-        $attached_files = [];
-        // foreach ($this->attachments as $attachment) {
-        //     $attached_files[] = Attachment::fromPath($attachment);
-        // }
-        return $attached_files;
+        $this->debugLog(json_encode($this->attachment_files));
+
+        foreach ($this->attachment_files as $key => $attachment) {
+            $this->attached_files[] = Attachment::fromPath($attachment['file'])->as($attachment['as'])->withMime($attachment['mime']);
+        }
+        $this->debugLog(json_encode($this->attached_files));
+        return $this->attached_files;
     }
 }
