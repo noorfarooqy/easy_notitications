@@ -6,9 +6,9 @@
     "autoload": {
         "psr-4": {
             "Noorfarooqy\\EasyNotifications\\": "src/",
-            "Noorfarooqy\\EasyNotifications\\Controllers\\": "app/Controllers",
-            "Noorfarooqy\\EasyNotifications\\Services\\": "app/Services",
-            "Noorfarooqy\\EasyNotifications\\Mail\\": "app/Mail"
+            "Noorfarooqy\\EasyNotifications\\Controllers\\": "src/Controllers",
+            "Noorfarooqy\\EasyNotifications\\Services\\": "src/Services",
+            "Noorfarooqy\\EasyNotifications\\Mail\\": "src/Mail"
         }
     },
     "authors": [
