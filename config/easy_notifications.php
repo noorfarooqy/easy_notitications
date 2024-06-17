@@ -33,6 +33,7 @@ return [
         'api_key' => env('AT_API_KEY'),
         'username' => env('AT_USERNAME', 'sandbox'),
         'from' => env('AT_FROM','AFRICASTKNG'),
+        'max_bulk_sms' => env('AT_MAX_BULK_SMS', 20),
 
     ]
 ];

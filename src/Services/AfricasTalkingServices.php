@@ -33,8 +33,8 @@ class AfricasTalkingServices extends NoorServices
                     'Content-Type' => 'application/json',
                     'Host' => config('easy_notifications.africastalking.api_host'),
                 ])->post($uri, [
-                    'username' => config('easy_notifications.africastalking.username'),
-                ]);
+                            'username' => config('easy_notifications.africastalking.username'),
+                        ]);
 
                 if ($response->status() != 200 && $response->status() != 201) {
                     $this->setError($response->body());
@@ -72,12 +72,12 @@ class AfricasTalkingServices extends NoorServices
                 'Accept-Encoding' => 'gzip, deflate, br',
 
             ])->asForm()->post($endpoint, [
-                'to' => $to,
-                'message' => $message,
-                'enqueue' => 1,
-                'username' => config('easy_notifications.africastalking.username'),
-                'from' => config('easy_notifications.africastalking.from'),
-            ]);
+                        'to' => $to,
+                        'message' => $message,
+                        'enqueue' => 1,
+                        'username' => config('easy_notifications.africastalking.username'),
+                        'from' => config('easy_notifications.africastalking.from'),
+                    ]);
 
             $data = [
                 'used_token' => $token->id,
@@ -100,5 +100,38 @@ class AfricasTalkingServices extends NoorServices
             $this->setError($th->getMessage());
             return $this->getResponse();
         }
+    }
+
+    public function SendBulkSmsUsingAfricasTalking($request)
+    {
+        $this->request = $request;
+        $this->rules = [
+            'to' => 'required|array',
+            'to.*' => 'required|numeric',
+            'message' => 'required|string',
+        ];
+        $this->customValidate();
+        if ($this->has_failed) {
+            return $this->getResponse();
+        }
+        $count = 0;
+        $max_bulk = config('easy_notifications.africastalking.max_bulk_sms', 20);
+        $data = $this->validatedData();
+        $to = '';
+        $message = $data['message'];
+        $latest = $this->getResponse();
+        foreach ($data['to'] as $number) {
+            $to .= $number . ',';
+            $count++;
+            if ($count == $max_bulk) {
+                $latest = $this->SendSmsUsingAfricasTalking($to, $message);
+                $to = '';
+                $count = 0;
+            }
+        }
+
+        return $latest;
+
+
     }
 }
