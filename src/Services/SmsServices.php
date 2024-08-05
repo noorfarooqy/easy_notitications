@@ -60,6 +60,10 @@ class SmsServices extends NoorServices
     public function SendSmsUsingOnfon($to, $message, $old_version = false)
     {
         $token = $this->AuthorizeOnfon();
+        if (env('APP_DEBUG')) {
+            Log::info('Generated token ');
+            Log::info(json_encode($token));
+        }
         if (!$token) {
             return false;
         }
