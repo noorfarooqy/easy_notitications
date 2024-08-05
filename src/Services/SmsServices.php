@@ -40,16 +40,20 @@ class SmsServices extends NoorServices
             Log::info($endpoint);
             Log::info(json_encode($payload));
             Log::info(json_encode($response->json()));
+            Log::info('Response is ok ' . $response->ok());
         }
+
         if ($response->ok()) {
             try {
                 $json_response = $response->json();
+                Log::info('parsing respnseonse');
                 $token = EasyNotification::create([
                     'onfon_token' => $json_response['token'],
-                    'expires_at' => now()->addSeconds($json_response['validDurationSeconds']),
+                    'expires_at' => now()->addSeconds((int) $json_response['validDurationSeconds']),
                 ]);
                 return $token;
             } catch (\Throwable $th) {
+                $this->debugLog('Issue parsing onfon response ' . $th->getMessage());
                 $this->setError($th->getMessage());
                 return false;
             }
@@ -71,12 +75,20 @@ class SmsServices extends NoorServices
 
         $endpoint = $this->url . config('easy_notifications.onfon.endpoints.send_sms.endpoint');
         $payload = [
-            'to' => $to,
-            'from' => config('easy_notifications.onfon.api_sender_id'),
-            'content' => $message,
-            'dlr' => 'yes',
-            'dlr-url' => env('APP_URL') . config('easy_notifications.onfon.dlr_callback'),
-            'dlr-level' => 2,
+            // "to" => $to,
+            // "from" => config('easy_notifications.onfon.api_sender_id'),
+            // "content" => $message,
+            // "dlr" => "no",
+            // "dlr-url" => "https://app.abubakarislamic.com",
+            // "dlr-level" => 1
+
+            "to" => $to,
+            "from" => config('easy_notifications.onfon.api_sender_id'),
+            "content" => $message,
+            "dlr" => config('easy_notifications.onfon.dlr', 'no'),
+            "dlr-url" => config('easy_notifications.onfon.dlr_callback'),
+            "dlr-level" => 1
+
         ];
         $response = Http::withHeaders([
             'Accept' => 'application/json',

@@ -10,12 +10,13 @@ return [
         "sandbox_url" => env("ONFON_SANDBOX_URL", "https://apis.onfonmedia.co.ke"),
         "production_url" => env("ONFON_PRODUCT_URL", "https://apis.onfonmedia.co.ke"),
         "dlr_callback" => env("ONFON_DLR_CALLBACK", "/v1/easy/onfon/callback"),
+        "dlr" => env("ONFON_DLR", "no"),
         "endpoints" => [
             "authorization" => [
                 "endpoint" => "/v1/authorization",
                 "method" => "POST",
             ],
-            "balance" =>  [
+            "balance" => [
                 "endpoint" => "/v2_balance",
                 "method" => "GET",
             ],
@@ -32,7 +33,7 @@ return [
         'sms_endpoint' => '/version1/messaging',
         'api_key' => env('AT_API_KEY'),
         'username' => env('AT_USERNAME', 'sandbox'),
-        'from' => env('AT_FROM','AFRICASTKNG'),
+        'from' => env('AT_FROM', 'AFRICASTKNG'),
         'max_bulk_sms' => env('AT_MAX_BULK_SMS', 20),
 
     ]
