@@ -39,6 +39,7 @@ class SmsServices extends NoorServices
         if (env('APP_DEBUG')) {
             Log::info($endpoint);
             Log::info(json_encode($payload));
+            Log::info(json_encode($response->json()));
         }
         if ($response->ok()) {
             try {
