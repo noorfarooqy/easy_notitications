@@ -22,7 +22,7 @@ class SmsServices extends NoorServices
         $existing_token = EasyNotification::where('has_expired', false)->get()->first();
         if ($existing_token && now()->lt($existing_token?->expires_at)) {
             return $existing_token;
-        } else if (now()->gt($existing_token?->expires_at)) {
+        } else if ($existing_token && now()->gt($existing_token?->expires_at)) {
             $existing_token->has_expired = true;
             $existing_token->save();
         }
@@ -57,7 +57,7 @@ class SmsServices extends NoorServices
             return false;
         }
     }
-    public function SendSmsUsingOnfon($to, $message, $old_version=false)
+    public function SendSmsUsingOnfon($to, $message, $old_version = false)
     {
         $token = $this->AuthorizeOnfon();
         if (!$token) {
