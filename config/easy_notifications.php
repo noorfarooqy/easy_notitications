@@ -25,6 +25,12 @@ return [
                 "method" => "POST",
             ],
         ],
+        "old_version" => [
+            "access_key" => env('ONFON_OV_ACCESS_KEY'),
+            "sender_id" => env("ONFON_OV_SENDER_ID"),
+            "client_id" => env("ONFON_OV_CLIENT_ID"),
+            "api_key" => env("ONFON_OV_API_KEY"),
+        ],
     ],
     'africastalking' => [
         'api_host' => env('AT_API_HOST', 'api.africastalking.com'),

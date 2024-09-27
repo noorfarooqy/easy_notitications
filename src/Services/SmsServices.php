@@ -64,6 +64,65 @@ class SmsServices extends NoorServices
     }
     public function SendSmsUsingOnfon($to, $message, $old_version = false)
     {
+        if ($old_version) {
+            return $this->SendSmsUsingOldVersion($to, $message);
+        }
+
+        return $this->SendSmsUsingNewVersion($to, $message);
+    }
+
+    public function SendSmsUsingOldVersion($to, $message)
+    {
+
+        $endpoint = $this->url . config('easy_notifications.onfon.endpoints.send_sms.endpoint');
+        $payload = [
+
+            "SenderId" => config('easy_notifications.onfon.old_version.sender_id'),
+            "ApiKey" => config('easy_notifications.onfon.old_version.api_key'),
+            "ClientId" => config('easy_notifications.onfon.old_version.client_id'),
+            "MessageParameters" => [
+                [
+                    "Text" => $message,
+                    "Number" => $to
+                ]
+            ]
+
+        ];
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'AccessKey' => config('easy_notifications.onfon.old_version.access_key'),
+        ])->post($endpoint, $payload);
+        if (env('APP_DEBUG')) {
+            Log::info($endpoint);
+            Log::info(json_encode($payload));
+        }
+        if ($response->ok()) {
+            $data = [
+                'used_token' => config('easy_notifications.onfon.old_version.access_key'),
+                'to' => $to,
+                'content' => $message,
+                'user' => Auth::user()?->id,
+            ];
+            try {
+                $json_response = $response->json();
+                $data['is_sent'] = true;
+                $data['message_id'] = $json_response["Data"]['MessageId'];
+                $sms = EasySmsNotifications::create($data);
+                return $sms;
+            } catch (\Throwable $th) {
+                $this->setError($th->getMessage());
+                $sms = EasySmsNotifications::create($data);
+                return false;
+            }
+        } else {
+            $this->setError(json_encode($response->json()));
+            return false;
+        }
+    }
+    public function SendSmsUsingNewVersion($to, $message)
+    {
+
         $token = $this->AuthorizeOnfon();
         if (env('APP_DEBUG')) {
             Log::info('Generated token ');
@@ -75,13 +134,6 @@ class SmsServices extends NoorServices
 
         $endpoint = $this->url . config('easy_notifications.onfon.endpoints.send_sms.endpoint');
         $payload = [
-            // "to" => $to,
-            // "from" => config('easy_notifications.onfon.api_sender_id'),
-            // "content" => $message,
-            // "dlr" => "no",
-            // "dlr-url" => "https://app.abubakarislamic.com",
-            // "dlr-level" => 1
-
             "to" => $to,
             "from" => config('easy_notifications.onfon.api_sender_id'),
             "content" => $message,
