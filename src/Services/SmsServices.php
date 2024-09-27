@@ -92,6 +92,12 @@ class SmsServices extends NoorServices
             ]
 
         ];
+        $token = EasyNotification::firstOrCreate([
+            'onfon_token' => config('easy_notifications.onfon.old_version.access_key'),
+        ], [
+            'onfon_token' => config('easy_notifications.onfon.old_version.access_key'),
+            'expires_at' => now()->addMonth(),
+        ]);
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
@@ -103,7 +109,7 @@ class SmsServices extends NoorServices
         }
         if ($response->ok()) {
             $data = [
-                'used_token' => config('easy_notifications.onfon.old_version.access_key'),
+                'used_token' => $token->id,
                 'to' => $to,
                 'content' => $message,
                 'user' => Auth::user()?->id,
