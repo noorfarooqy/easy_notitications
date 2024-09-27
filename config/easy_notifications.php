@@ -3,6 +3,7 @@
 return [
 
     "onfon" => [
+        'version' => env('ONFON_VERSION', 'OLD'),
         "api_sender_id" => env('ONFON_SENDER_ID'),
         "api_username" => env("ONFON_API_USERNAME"),
         "api_password" => env("ONFON_API_PASSWORD"),
