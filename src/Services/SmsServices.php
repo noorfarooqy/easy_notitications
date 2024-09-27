@@ -74,7 +74,11 @@ class SmsServices extends NoorServices
     public function SendSmsUsingOldVersion($to, $message)
     {
 
+
         $endpoint = $this->url . config('easy_notifications.onfon.endpoints.send_sms.endpoint');
+        if (config('easy_notifications.onfon.version', 'OLD') == 'OLD') {
+            $endpoint = config('easy_notifications.onfon.old_version.endpoint');
+        }
         $payload = [
 
             "SenderId" => config('easy_notifications.onfon.old_version.sender_id'),
