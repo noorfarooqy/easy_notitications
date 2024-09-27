@@ -64,7 +64,7 @@ class SmsServices extends NoorServices
     }
     public function SendSmsUsingOnfon($to, $message, $old_version = false)
     {
-        if ($old_version) {
+        if (config('easy_notifications.onfon.version', 'OLD') == 'OLD') {
             return $this->SendSmsUsingOldVersion($to, $message);
         }
 
