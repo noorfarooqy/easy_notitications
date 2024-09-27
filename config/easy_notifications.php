@@ -27,6 +27,7 @@ return [
             ],
         ],
         "old_version" => [
+            "endpoint" => env('ONFON_OV_URL'),
             "access_key" => env('ONFON_OV_ACCESS_KEY'),
             "sender_id" => env("ONFON_OV_SENDER_ID"),
             "client_id" => env("ONFON_OV_CLIENT_ID"),
